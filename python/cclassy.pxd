@@ -92,6 +92,7 @@ cdef extern from "class.h":
         double w0_fld
         double wa_fld
         double cs2_fld
+        short shooting_failed
         double Omega0_ur
         double Omega0_dcdmdr
         double Omega0_dr
@@ -442,6 +443,7 @@ cdef extern from "class.h":
     void perturbations_free(void*)
     void thermodynamics_free(void*)
     void background_free(void*)
+    void background_free_input(void*)
     void fourier_free(void*)
     void distortions_free(void*)
 
