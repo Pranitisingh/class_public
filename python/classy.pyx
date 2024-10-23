@@ -382,8 +382,11 @@ cdef class Class:
         # with the error message from the faulty module of CLASS.
         if "background" in level:
             if background_init(&(self.pr), &(self.ba)) == _FAILURE_:
-                self.struct_cleanup()
-                raise CosmoComputationError(self.ba.error_message)
+                if self.ba.shooting_failed: # Check for shooting failure
+                    background_free_input(&self.ba) # Free partially initialized memory
+                    raise CosmoComputationError(self.ba.error_message) # Raise an error
+                self.struct_cleanup() # Cleanup any initialized structures
+                raise CosmoComputationError(self.ba.error_message) # Raise an error for general failures
             self.ncp.add("background")
 
         if "thermodynamics" in level:
